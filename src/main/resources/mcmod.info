@@ -1,0 +1,16 @@
+[
+{
+  "modid": "rcad",
+  "name": "Raining Cats and Dogs",
+  "description": "Makes it rain cats and dogs during a thunderstorm.",
+  "version": "${version}",
+  "mcversion": "",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["The_Fireplace"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
