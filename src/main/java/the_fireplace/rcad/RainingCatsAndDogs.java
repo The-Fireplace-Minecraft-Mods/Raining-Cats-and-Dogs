@@ -5,10 +5,19 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.logging.log4j.Logger;
+import the_fireplace.rcad.compat.IWeather2Compat;
+import the_fireplace.rcad.compat.Weather2Compat;
 
 @Mod(modid = RainingCatsAndDogs.MODID, name = RainingCatsAndDogs.MODNAME, version = "${version}", acceptableRemoteVersions = "*", guiFactory = "the_fireplace.rcad.client.RCADConfigGui")
 @Mod.EventBusSubscriber
@@ -16,8 +25,23 @@ public class RainingCatsAndDogs {
 	public static final String MODNAME = "Raining Cats and Dogs";
 	public static final String MODID = "rcad";
 
+	@SuppressWarnings("deprecation")
+	public static Logger LOGGER = FMLLog.getLogger();
+
+	@Mod.EventHandler
+	public void preInit(FMLPreInitializationEvent event){
+		LOGGER = event.getModLog();
+		IWeather2Compat compat;
+		if(Loader.isModLoaded("weather2")){
+			compat = new Weather2Compat();
+			compat.register();
+		} else {
+			MinecraftForge.EVENT_BUS.register(this);
+		}
+	}
+
 	@SubscribeEvent
-	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		World world = event.player.world;
 		if (!world.isRemote) {
 			long time = world.getTotalWorldTime();
@@ -38,6 +62,12 @@ public class RainingCatsAndDogs {
 				}
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void configChanged(ConfigChangedEvent.OnConfigChangedEvent event){
+		if(event.getModID().equals(MODID))
+			ConfigManager.sync(MODID, Config.Type.INSTANCE);
 	}
 
 	@Config(modid = MODID)
