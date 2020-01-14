@@ -1,4 +1,4 @@
-package the_fireplace.rcad.compat;
+/*package the_fireplace.rcad.compat;
 
 import CoroUtil.util.Vec3;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -52,4 +52,4 @@ public class Weather2Compat implements IWeather2Compat {
 			}
 		}
 	}
-}
+}*/

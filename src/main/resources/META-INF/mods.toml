@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[24,)"
+issueTrackerURL="https://github.com/The-Fireplace-Minecraft-Mods/Raining-Cats-and-Dogs/issues"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/raining-cats-and-dogs"
+credits=""
+authors="The_Fireplace"
+
+[[mods]]
+modId="rcad"
+version="${file.jarVersion}"
+displayName="Raining Cats and Dogs"
+description='''
+Makes it rain cats and dogs during a thunderstorm.
+'''
+
+[[dependencies.rcad]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25.0.168,)"
+    ordering="NONE"
+    side="SERVER"
+[[dependencies.rcad]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2,)"
+    ordering="NONE"
+    side="SERVER"
