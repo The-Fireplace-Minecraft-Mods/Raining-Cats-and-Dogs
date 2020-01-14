@@ -1,15 +1,17 @@
 package the_fireplace.rcad;
 
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,6 +31,7 @@ public class RainingCatsAndDogs {
 		} else {*/
 			MinecraftForge.EVENT_BUS.register(this);
 		//}
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, cfg.COMMON_SPEC);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverConfig);
 	}
 
@@ -40,14 +43,14 @@ public class RainingCatsAndDogs {
 			if (time % (cfg.time_between_animals * 20) == 0 && world.dimension.getType() == DimensionType.OVERWORLD && world.isThundering()) {
 				BlockPos spawnPos = new BlockPos(event.player.getPosition().getX() + world.rand.nextInt(cfg.animal_spawn_radius * 2) - cfg.animal_spawn_radius, cfg.animal_spawn_height, event.player.getPosition().getZ() + world.rand.nextInt(cfg.animal_spawn_radius * 2) - cfg.animal_spawn_radius);
 				if (world.rand.nextBoolean()) {
-					EntityOcelot newCat = new EntityOcelot(world);
+					OcelotEntity newCat = new OcelotEntity(EntityType.OCELOT, world);
 					newCat.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-					world.spawnEntity(newCat);
+					world.addEntity(newCat);
 					newCat.setPositionAndRotation(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), world.rand.nextFloat(), world.rand.nextFloat());
 				} else {
-					EntityWolf newWolf = new EntityWolf(world);
+					WolfEntity newWolf = new WolfEntity(EntityType.WOLF, world);
 					newWolf.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-					world.spawnEntity(newWolf);
+					world.addEntity(newWolf);
 					newWolf.setPositionAndRotation(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), world.rand.nextFloat(), world.rand.nextFloat());
 					if (cfg.angry_wolves && world.rand.nextInt(10) != 5)
 						newWolf.setAngry(true);
